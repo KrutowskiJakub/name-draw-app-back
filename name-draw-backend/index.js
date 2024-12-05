@@ -72,7 +72,7 @@ app.post("/api/draw", async (req, res) => {
 
 
 
-app.post("/seed", async (req, res) => {
+app.get("/seed", async (req, res) => {
     try {
         // Clear the collection
         await Name.deleteMany();
@@ -96,6 +96,7 @@ app.post("/seed", async (req, res) => {
         res.status(500).send("Failed to seed database");
     }
 });
+
 
 // Start Server
 const PORT = process.env.PORT || 5000;
