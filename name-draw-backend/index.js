@@ -72,10 +72,29 @@ app.post("/api/draw", async (req, res) => {
 
 
 
-app.post("/api/seed", async (req, res) => {
-    const { names } = req.body;
-    await Name.insertMany(names);
-    res.json({ message: "Names seeded successfully!" });
+app.post("/seed", async (req, res) => {
+    try {
+        // Clear the collection
+        await Name.deleteMany();
+
+        // Insert names with marriage restrictions
+        const names = [
+            { name: "Anna", isDrawn: false, marriage: "Łukasz" },
+            { name: "Łukasz", isDrawn: false, marriage: "Anna" },
+            { name: "Aga", isDrawn: false, marriage: "Tomek" },
+            { name: "Tomek", isDrawn: false, marriage: "Aga" },
+            { name: "Zofia", isDrawn: false, marriage: "Marcin" },
+            { name: "Marcin", isDrawn: false, marriage: "Zofia" },
+            { name: "Piotr", isDrawn: false, marriage: "Maria" },
+            { name: "Maria", isDrawn: false, marriage: "Piotr" },
+        ];
+
+        await Name.insertMany(names);
+        res.status(200).send("Database seeded successfully!");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Failed to seed database");
+    }
 });
 
 // Start Server
